@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "examplemod",
+  "version": "${version}",
+
+  "name": "ExampleMod",
+  "description": "Helps you aiming when mining and attacking mobs. Perfect mod for computer newbies. Works great with controllers. Doesn't work on players (no PvP advantage)",
+  "authors": [
+    "GITHUB_USER"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ExampleUser/ExampleMod/issues",
+    "sources": "https://github.com/ExampleUser/ExampleMod"
+  },
+
+  "license": "GNU-GPL-3.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "com.example.examplemod.fabric.ExampleMod"
+      }
+    ]
+  },
+  "mixins": [],
+
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "minecraft": "1.19.x",
+    "java": ">=17",
+    "fabric-language-kotlin": ">=1.8.3+kotlin.1.7.10",
+    "cloth-config": ">=8.0.0"
+  },
+  "suggests": {}
+}
