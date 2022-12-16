@@ -1,5 +1,8 @@
 // Common
 const val kotlinVersion = "1.7.10"
+const val kotlinCoroutinesVersion = "1.6.4"
+const val kotlinSerializationVersion = "1.3.3"
+const val ktLintGradleVersion = "11.0.0"
 const val jvmTarget = "17"
 
 // Minecraft

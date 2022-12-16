@@ -2,25 +2,25 @@ modLoader = "kotlinforforge"
 
 loaderVersion = "[3,)"
 license = "GNU-GPL-3.0"
-issueTrackerURL = "https://github.com/GITHUB_USER/MODNAME/issues"
+issueTrackerURL = "https://github.com/ExampleUser/ExampleMod/issues"
 
 [[mods]]
-modId = "MODID"
+modId = "examplemod"
 version = "1.0.0"
-displayName = "MODNAME"
-authors = "GITHUB_USER"
+displayName = "ExampleMod"
+authors = "ExampleUser"
 description = '''
-Helps you aiming when mining and attacking mobs. Perfect mod for computer newbies. Works great with controllers. Doesn't work on players (no PvP advantage)
+Examplemod description
 '''
-updateJSONURL="https://raw.githubusercontent.com/GITHUB_USER/MODNAME/main/updates.json"
+updateJSONURL="https://raw.githubusercontent.com/ExampleUser/ExampleMod/main/updates.json"
 #logoFile="icon.png"
-[[dependencies.MODID]]
+[[dependencies.examplemod]]
 modId = "forge"
 mandatory = true
 versionRange = "[43,)"
 ordering = "NONE"
 side = "CLIENT"
-[[dependencies.MODID]]
+[[dependencies.examplemod]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.19.2]"

@@ -1,11 +1,19 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
 import java.util.Date
 
 buildscript {
+    repositories {
+        maven("https://maven.minecraftforge.net")
+        mavenCentral()
+    }
     dependencies {
+        classpath("net.minecraftforge.gradle:ForgeGradle:5.+")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinGradlePlugin")
     }
+}
+
+repositories {
+    maven("https://thedarkcolour.github.io/KotlinForForge/")
 }
 
 plugins {
@@ -13,21 +21,54 @@ plugins {
     kotlin("jvm")
     id("net.minecraftforge.gradle") version forgeGradlePlugin
 }
-apply(from = "https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-$kotlinForForge.gradle")
+
+val library = configurations.create("library")
+val inJar = configurations.create("inJar")
+configurations.implementation.extendsFrom(inJar)
+library.extendsFrom(inJar)
 
 group = "$modGroup.forge"
 version = modVersion
 
-val inJar = configurations.create("inJar")
-configurations.implementation.extendsFrom(inJar)
+minecraft.runs.all {
+    lazyToken("minecraft_classpath") {
+        configurations["library"]
+            .copyRecursive()
+            .resolve()
+            .joinToString(File.pathSeparator) { it.absolutePath }
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation("thedarkcolour:kotlinforforge:$kotlinForForge")
+
+    library("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlinVersion) {
+        exclude("org.jetbrains", "annotations")
+    }
+    library("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion) {
+        exclude("org.jetbrains", "annotations")
+    }
+    library("org.jetbrains.kotlinx", "kotlinx-coroutines-core", kotlinCoroutinesVersion) {
+        exclude("org.jetbrains", "annotations")
+    }
+    library("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", kotlinCoroutinesVersion) {
+        exclude("org.jetbrains", "annotations")
+    }
+    library("org.jetbrains.kotlinx", "kotlinx-serialization-json", kotlinSerializationVersion) {
+        exclude("org.jetbrains", "annotations")
+    }
+
     minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
-    inJar(project(":core"))
+
+    inJar(project(":core")) {
+        // You may want to exclude some libs that are already in the classpath if you have a duplication error when
+        // running runClient gradle task
+        // exclude("com.google.guava")
+    }
 }
 
 val Project.minecraft: net.minecraftforge.gradle.common.util.MinecraftExtension
@@ -40,7 +81,7 @@ minecraft.let {
             workingDirectory(project.file("run"))
             property("forge.logging.console.level", "debug")
             mods {
-                this.create(modVersion) {
+                create(modId) {
                     source(sourceSets.main.get())
                 }
             }
@@ -59,10 +100,8 @@ tasks {
         }
     }
 
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = javaVersion.toString()
-        }
+    compileKotlin {
+        kotlinOptions.jvmTarget = jvmTarget
     }
 
     java {
@@ -73,7 +112,8 @@ tasks {
         targetCompatibility = javaVersion
     }
 
-    withType<Jar> {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         from(
             inJar.map {
                 if (it.isDirectory) it else zipTree(it)

@@ -4,9 +4,9 @@
   "version": "${version}",
 
   "name": "ExampleMod",
-  "description": "Helps you aiming when mining and attacking mobs. Perfect mod for computer newbies. Works great with controllers. Doesn't work on players (no PvP advantage)",
+  "description": "ExampleMod description",
   "authors": [
-    "GITHUB_USER"
+    "ExampleUser"
   ],
   "contact": {
     "homepage": "https://github.com/ExampleUser/ExampleMod/issues",
